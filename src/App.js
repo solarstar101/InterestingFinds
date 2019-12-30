@@ -7,6 +7,7 @@ import Home from "./components/pages/Home";
 import Staff from "./components/pages/Staff";
 import Login from "./components/auth/Login";
 import Pricing from "./components/pages/Pricing";
+import News from "./components/pages/News";
 
 import "./App.css";
 
@@ -28,6 +29,7 @@ export default class App extends Component {
           <div className="App">
             <NavBar />
             <Route path="/" exact={true} component={Home} />
+            <Route path="/news" exact={true} component={News} />
             <Route path="/pricing" exact={true} component={Pricing} />
             <SecureRoute path="/staff" exact={true} component={Staff} />
             <Route

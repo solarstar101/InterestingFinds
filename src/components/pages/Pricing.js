@@ -1,25 +1,96 @@
-import React from "react";
-import { Container } from "semantic-ui-react";
+import React, { useState, useEffect } from "react";
+import { Container, Grid, Segment } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 
 function Pricing() {
+  var data = require("../../Data/pricing.json"); // forward slashes will depend on the file location
+
+  const [hasError, setErrors] = useState(false);
+  const [toggleState, setToggle] = useState(true);
+
+  const [pricings, setPricings] = useState({});
+
+  function toggle() {
+    setToggle(!toggleState);
+  }
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await fetch("../../Data/pricing.json");
+      res
+        .json()
+        .then(res => setPricings(res))
+        .catch(err => setErrors(err));
+    }
+
+    fetchData();
+  });
+
   return (
-    <Container>
-      <p>
-        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo
-        ligula eget dolor. Aenean massa strong. Cum sociis natoque penatibus et
-        magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis,
-        ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa
-        quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget,
-        arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-        Nullam dictum felis eu pede link mollis pretium. Integer tincidunt. Cras
-        dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend
-        tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac,
-        enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.
-        Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean
-        imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper
-        ultricies nisi.
-      </p>
-    </Container>
+    <React.Fragment>
+      <Button onClick={toggle}>
+        {toggleState ? <span>Montly!</span> : <span>Yearly!</span>}
+      </Button>
+      <Container>
+        <Grid columns="equal">
+          <Grid.Row className="three column stackable">
+            <Grid.Column>
+              <Segment className="ui raised segments">
+                <Segment className="ui center aligned secondary">
+                  <div className="ui statistic">
+                    <div className="value">$50</div>
+                    <div className="label">per month</div>
+                  </div>
+                </Segment>
+                <Segment className="ui center aligned ">
+                  <p>- Premium Feature One</p>
+                </Segment>
+                <Segment className="ui center aligned segment">
+                  <p>- Premium Feature Two</p>
+                </Segment>
+              </Segment>
+              <div className="ui green fluid button">Select</div>
+            </Grid.Column>
+            <Grid.Column>
+              <Segment className="ui raised segments">
+                <Segment className="ui center aligned secondary">
+                  <div className="ui statistic">
+                    <div className="value">$100</div>
+                    <div className="label">per month</div>
+                  </div>
+                </Segment>
+                <Segment className="ui center aligned ">
+                  <p>- Premium Feature One</p>
+                </Segment>
+                <Segment className="ui center aligned segment">
+                  <p>- Premium Feature Two</p>
+                </Segment>
+              </Segment>
+              <div className="ui green fluid button">Select</div>
+            </Grid.Column>
+            <Grid.Column>
+              <Segment className="ui raised segments">
+                <Segment className="ui center aligned secondary">
+                  <div className="ui statistic">
+                    <div className="value">$150</div>
+                    <div className="label">per month</div>
+                  </div>
+                </Segment>
+                <Segment className="ui center aligned ">
+                  <p>- Premium Feature One</p>
+                </Segment>
+                <Segment className="ui center aligned segment">
+                  <p>- Premium Feature Two</p>
+                </Segment>
+              </Segment>
+              <div className="ui green fluid button">Select</div>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Container>
+      <div>{JSON.stringify(pricings)}</div>
+      <span>Has error: {JSON.stringify(hasError)}</span>
+    </React.Fragment>
   );
 }
 
