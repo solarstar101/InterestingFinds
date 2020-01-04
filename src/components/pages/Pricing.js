@@ -1,95 +1,67 @@
-import React, { useState, useEffect } from "react";
-import { Container, Grid, Segment } from "semantic-ui-react";
+import React, { useState } from "react";
+
+import { Container, Grid } from "semantic-ui-react";
 import { Button } from "semantic-ui-react";
+import PriceCards from "../pages/pricingComponents/PriceCards";
 
+//setting state with react useState hook
 function Pricing() {
-  var data = require("../../Data/pricing.json"); // forward slashes will depend on the file location
-
-  const [hasError, setErrors] = useState(false);
-  const [toggleState, setToggle] = useState(true);
-
-  const [pricings, setPricings] = useState({});
-
-  function toggle() {
-    setToggle(!toggleState);
-  }
-
-  useEffect(() => {
-    async function fetchData() {
-      const res = await fetch("../../Data/pricing.json");
-      res
-        .json()
-        .then(res => setPricings(res))
-        .catch(err => setErrors(err));
-    }
-
-    fetchData();
+  const [subscription, setSubscription] = useState({
+    time: "Monthly"
   });
 
   return (
     <React.Fragment>
-      <Button onClick={toggle}>
-        {toggleState ? <span>Montly!</span> : <span>Yearly!</span>}
-      </Button>
+      <h1>{subscription.time} </h1>
+      <Button.Group id="Subscriptions">
+        <Button
+          onClick={() => {
+            setSubscription({ time: "Monthly" });
+          }}
+          className={subscription.time === "Monthly" ? "positive" : null}
+        >
+          Monthly
+        </Button>
+        <Button.Or />
+        <Button
+          onClick={() => {
+            setSubscription({ time: "Yearly" });
+          }}
+          className={subscription.time === "Yearly" ? "positive" : null}
+        >
+          Yearly
+        </Button>
+      </Button.Group>
       <Container>
         <Grid columns="equal">
           <Grid.Row className="three column stackable">
             <Grid.Column>
-              <Segment className="ui raised segments">
-                <Segment className="ui center aligned secondary">
-                  <div className="ui statistic">
-                    <div className="value">$50</div>
-                    <div className="label">per month</div>
-                  </div>
-                </Segment>
-                <Segment className="ui center aligned ">
-                  <p>- Premium Feature One</p>
-                </Segment>
-                <Segment className="ui center aligned segment">
-                  <p>- Premium Feature Two</p>
-                </Segment>
-              </Segment>
-              <div className="ui green fluid button">Select</div>
+              <PriceCards
+                subscription={subscription.time}
+                monthly={"$50"}
+                yearly={"$500"}
+                status={"Basic"}
+              />
             </Grid.Column>
             <Grid.Column>
-              <Segment className="ui raised segments">
-                <Segment className="ui center aligned secondary">
-                  <div className="ui statistic">
-                    <div className="value">$100</div>
-                    <div className="label">per month</div>
-                  </div>
-                </Segment>
-                <Segment className="ui center aligned ">
-                  <p>- Premium Feature One</p>
-                </Segment>
-                <Segment className="ui center aligned segment">
-                  <p>- Premium Feature Two</p>
-                </Segment>
-              </Segment>
-              <div className="ui green fluid button">Select</div>
+              <PriceCards
+                subscription={subscription.time}
+                monthly={"$100"}
+                yearly={"$1000"}
+                status={"Premium"}
+              />
             </Grid.Column>
             <Grid.Column>
-              <Segment className="ui raised segments">
-                <Segment className="ui center aligned secondary">
-                  <div className="ui statistic">
-                    <div className="value">$150</div>
-                    <div className="label">per month</div>
-                  </div>
-                </Segment>
-                <Segment className="ui center aligned ">
-                  <p>- Premium Feature One</p>
-                </Segment>
-                <Segment className="ui center aligned segment">
-                  <p>- Premium Feature Two</p>
-                </Segment>
-              </Segment>
-              <div className="ui green fluid button">Select</div>
+              <PriceCards
+                subscription={subscription.time}
+                monthly={"$200"}
+                yearly={"$2000"}
+                status={"Elite"}
+              />
             </Grid.Column>
           </Grid.Row>
         </Grid>
       </Container>
-      <div>{JSON.stringify(pricings)}</div>
-      <span>Has error: {JSON.stringify(hasError)}</span>
     </React.Fragment>
   );
 }
