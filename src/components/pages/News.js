@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
 import styles from "./newsComponents/Newscard.module.css";
-import { Container } from "semantic-ui-react";
-
+import { Grid } from "semantic-ui-react";
+import NewsCard from "./newsComponents/CardUI";
 import axios from "axios";
 
 export default class News extends Component {
@@ -25,7 +25,7 @@ export default class News extends Component {
       // Set state with result
       this.setState({ data: res.data.articles });
       this.setState({ count: res.data.articles.length });
-      //console.log(this.state.data);
+      console.log(this.state.data);
     });
   }
 
@@ -35,42 +35,30 @@ export default class News extends Component {
       return `http://www.geonames.org/flags/x/${flag}.gif`;
     }
 
-    console.log(this.state.data);
+    //split news cards into a specific count per row
+    const splitEvery = (array, count) =>
+      array.reduce((result, item, index) => {
+        if (index % count === 0) result.push([]);
+        result[Math.floor(index / count)].push(item);
+        return result;
+      }, []);
 
     return (
-      <div className={styles.newsBody}>
-        {this.state.data.map((item, y) => {
-          const fixedDate = item.publishedAt.substring(
-            0,
-            item.publishedAt.indexOf("T")
-          );
-
-          return (
-            <div key={y} className={styles.outerCard}>
-              <img
-                className={styles.img}
-                alt={item.description}
-                src={item.urlToImage}
-              />
-              <div className={styles.date}>
-                <span className={styles.dateSpan}>{fixedDate} </span>
-              </div>
-              <figcaption className={styles.figCaption}>
-                <h3 className={styles.h3}>{item.title} </h3>
-                <p className={styles.p}>{item.description}</p>
-              </figcaption>
-
-              <div className="generalInfo">
-                <h4>
-                  <a href={item.url} target="_blank" rel="noopener noreferrer">
-                    {item.name}
-                  </a>
-                </h4>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      <Grid columns="equal" divided>
+        {splitEvery(this.state.data, 7).map(newsChunk => (
+          <Grid.Row>
+            {newsChunk.map(news => (
+              <Grid.Column>
+                <NewsCard
+                  desc={news.description}
+                  title={news.title}
+                  image={news.urlToImage}
+                />
+              </Grid.Column>
+            ))}
+          </Grid.Row>
+        ))}
+      </Grid>
     );
   }
 }

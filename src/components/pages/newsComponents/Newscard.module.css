@@ -1,13 +1,17 @@
 .newsBody {
   display: flex;
   justify-content: center;
-  align-items: center;
   flex-flow: wrap;
   margin: 0;
   height: 100%;
 }
 
 .outerCard {
+  align-items: stretch;
+}
+/* 
+.outerCard {
+  background-size: contain;
   background-color: #000000;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   color: #ffffff;
@@ -67,4 +71,4 @@
 .p {
   margin: 0;
   padding: 0;
-}
+} */
