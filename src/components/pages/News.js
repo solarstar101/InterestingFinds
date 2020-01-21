@@ -32,13 +32,14 @@ export default class News extends Component {
     const split = this.state.data.reduce((result, item, index) => {
       if (index % count === 0) result.push([]);
       result[Math.floor(index / count)].push(item);
+
       return result;
     }, []);
 
-    let newsSplitted = split.map(newsItems => (
-      <Grid.Row>
-        {newsItems.map(news => (
-          <Grid.Column>
+    let newsSplitted = split.map((newsItems, i) => (
+      <Grid.Row key={i}>
+        {newsItems.map((news, j) => (
+          <Grid.Column key={j}>
             <NewsCard
               desc={news.description}
               title={news.title}
