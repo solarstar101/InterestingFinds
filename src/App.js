@@ -24,7 +24,6 @@ export default class App extends Component {
           clientId="0oa28ek59bNPHO7Ct357"
           redirectUri={window.location.origin + "/implicit/callback"}
           onAuthRequired={onAuthRequired}
-          pkce={true}
         >
           <div className="App">
             <NavBar />

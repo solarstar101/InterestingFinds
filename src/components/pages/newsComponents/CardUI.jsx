@@ -15,10 +15,10 @@ export default function NewsCard(props) {
           <Card.Description>{props.desc}</Card.Description>
         </Card.Content>
         <Card.Content extra>
-          <a>
+          <i>
             <Icon name="user" />
             22 Friends
-          </a>
+          </i>
         </Card.Content>
       </Card>
     </React.Fragment>

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-import styles from "./newsComponents/Newscard.module.css";
 import { Grid } from "semantic-ui-react";
 import NewsCard from "./newsComponents/CardUI";
 import axios from "axios";
@@ -19,7 +18,7 @@ export default class News extends Component {
   }
 
   // Lifecycle method
-  componentWillMount() {
+  componentDidMount() {
     // Make HTTP reques with Axios
     axios.get(this.apiUrl).then(res => {
       // Set state with result
@@ -29,35 +28,32 @@ export default class News extends Component {
     });
   }
 
+  splitMenuItems(count) {
+    const split = this.state.data.reduce((result, item, index) => {
+      if (index % count === 0) result.push([]);
+      result[Math.floor(index / count)].push(item);
+      return result;
+    }, []);
+
+    let newsSplitted = split.map(newsItems => (
+      <Grid.Row>
+        {newsItems.map(news => (
+          <Grid.Column>
+            <NewsCard
+              desc={news.description}
+              title={news.title}
+              image={news.urlToImage}
+            />
+          </Grid.Column>
+        ))}
+      </Grid.Row>
+    ));
+    return newsSplitted;
+  }
   render() {
-    //helper function
-    function findFlag(flag) {
-      return `http://www.geonames.org/flags/x/${flag}.gif`;
-    }
-
-    //split news cards into a specific count per row
-    const splitEvery = (array, count) =>
-      array.reduce((result, item, index) => {
-        if (index % count === 0) result.push([]);
-        result[Math.floor(index / count)].push(item);
-        return result;
-      }, []);
-
     return (
       <Grid columns="equal" divided>
-        {splitEvery(this.state.data, 7).map(newsChunk => (
-          <Grid.Row>
-            {newsChunk.map(news => (
-              <Grid.Column>
-                <NewsCard
-                  desc={news.description}
-                  title={news.title}
-                  image={news.urlToImage}
-                />
-              </Grid.Column>
-            ))}
-          </Grid.Row>
-        ))}
+        {this.splitMenuItems(4)}
       </Grid>
     );
   }
