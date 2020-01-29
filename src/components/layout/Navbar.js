@@ -3,23 +3,20 @@ import { Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 export default class MenuExampleStackable extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    activeItem: "lolnothing"
+  };
 
-    this.state = {
-      activeItem: "/"
-    };
-  }
-  handleActive = (e, { name }) => this.setState({ activeItem: name });
+  // handleActive = (e, { name }) => e.setState({ activeItem: name });
 
   render() {
     const { activeItem } = this.state;
 
     return (
-      <Menu>
+      <Menu stackable={true}>
         <Menu.Item
           as={Link}
-          active={activeItem === "Home"}
+          active={activeItem === "News"}
           onClick={this.handleActive}
           link={true}
           to="/"

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function Home() {
+export default function Fun() {
   const [count, setCount] = useState(0);
 
   var click = () => {

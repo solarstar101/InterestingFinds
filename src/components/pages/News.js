@@ -1,31 +1,34 @@
 import React, { Component } from "react";
 
-import { Grid } from "semantic-ui-react";
-import NewsCard from "./newsComponents/CardUI";
-import axios from "axios";
+import { Grid, Button } from "semantic-ui-react";
+import NewsCard from "./newsComponents/NewsCard.js";
 
 export default class News extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    data: [],
+    count: 0,
+    value: "bbc news",
+    status: ""
+  };
 
-    this.state = {
-      data: [],
-      count: 0,
-      value: "bbc news"
-    };
-    this.apiUrl =
-      "https://newsapi.org/v2/everything?q=climate&apiKey=611fafd7885c44668a4ee5d5785860d9";
-  }
+  handleClick = () => {
+    const helloworld = "hello beautiful world";
 
-  // Lifecycle method
+    this.setState({ status: helloworld });
+  };
+
   componentDidMount() {
-    // Make HTTP reques with Axios
-    axios.get(this.apiUrl).then(res => {
-      // Set state with result
-      this.setState({ data: res.data.articles });
-      this.setState({ count: res.data.articles.length });
-      console.log(this.state.data);
-    });
+    const url =
+      "https://newsapi.org/v2/everything?q=climate&apiKey=611fafd7885c44668a4ee5d5785860d9";
+
+    fetch(url)
+      .then(response => {
+        return response.json();
+      })
+      .then(myjson => {
+        this.setState({ data: myjson.articles });
+        this.setState({ count: myjson.articles.length });
+      });
   }
 
   splitMenuItems(count) {
@@ -44,6 +47,7 @@ export default class News extends Component {
               desc={news.description}
               title={news.title}
               image={news.urlToImage}
+              key={j}
             />
           </Grid.Column>
         ))}
@@ -51,9 +55,12 @@ export default class News extends Component {
     ));
     return newsSplitted;
   }
+
   render() {
     return (
-      <Grid columns="equal" divided>
+      <Grid stackable={true} columns={4} divided>
+        <Button onClick={this.handleClick} />
+        {this.state.status}
         {this.splitMenuItems(4)}
       </Grid>
     );
